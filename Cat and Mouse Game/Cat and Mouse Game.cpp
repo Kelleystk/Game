@@ -645,12 +645,12 @@ void Meo3() {
 }
 
 void DrawLazerBeam() {
-	float xOne = 0, yOne = 0;
-	float mouseX, mouseY;
+	float xMeo = 0, yMeo = 0;
+	//float mouseX, mouseY;
 	float xchuot = -(55 + 50) / 2.0;
 	float ychuot = (25 + 35) / 2.0;
-	float mouseXEnd = -((-mouseX) + xOne);
-	float mouseYEnd = -((-mouseY) + yOne);
+	float mouseXEnd /*= -((-mouseX) + xMeo)*/;
+	float mouseYEnd /*= -((-mouseY) + yMeo)*/;
 	glLineWidth(5);   //----Laser beam width
 	glColor3f(1, 0, 0);
 	glBegin(GL_LINES);
