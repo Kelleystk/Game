@@ -644,6 +644,22 @@ void Meo3() {
 	}
 }
 
+void DrawLazerBeam() {
+	float xOne = 0, yOne = 0;
+	float mouseX, mouseY;
+	float xchuot = -(55 + 50) / 2.0;
+	float ychuot = (25 + 35) / 2.0;
+	float mouseXEnd = -((-mouseX) + xOne);
+	float mouseYEnd = -((-mouseY) + yOne);
+	glLineWidth(5);   //----Laser beam width
+	glColor3f(1, 0, 0);
+	glBegin(GL_LINES);
+	glVertex2f(xchuot, ychuot);
+	glVertex2f(mouseXEnd, mouseYEnd);
+	glEnd();
+	glLineWidth(1);
+}
+
 void StartGame() {
 	//Đường
 	glColor3f(0.376, 0.188, 0);
@@ -722,21 +738,10 @@ void StartGame() {
 	Meo1();
 	Meo2();
 	Meo3();
+	DrawLazerBeam();
 }
 
-void fireMissileRight()
-{
-	right2left = right2left - 4;
-	if (right2left <= -100)
-	{
-		right2left = 0;
-		//chuot(right2left, meo1);
-	}
-	else
-	{
-		//chuot(right2left, meo1);
-	}
-}
+
 
 void TrangChủ() {
 	//Trang chủ
