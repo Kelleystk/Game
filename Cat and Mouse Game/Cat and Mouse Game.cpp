@@ -50,9 +50,20 @@ int phomai = +75;
 int lrIndex4 = 0;
 bool food = true;
 
+//đạn
+int lrIndex5 = 0;
+
 int right2left = 0;
 float theta;
 
+bool fire = false; //Khai báo viên đạn
+
+
+typedef struct  //cấu trúc viên đạn
+{
+	float x, y;
+}bullets_t;
+bullets_t bullet;
 
 //Hiển thị TEXT
 const int font1 = (int)GLUT_BITMAP_TIMES_ROMAN_24;
@@ -115,6 +126,37 @@ void tree(int x, int y) {
 	}
 	glEnd();
 }
+
+void drawFire() // hàm vẽ đạn
+{
+	glColor3f(1, 0, 0);
+	glutSolidSphere(0.08, 10, 100);
+	glPopMatrix();
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; i++)
+	{
+		theta = i*3.142 / 180;
+		glVertex2f(lrIndex5 + 28 + 0.7 * cos(theta), 12 + 0.7 * sin(theta));
+	}
+	glEnd();
+}
+
+//void onClick(int button, int stat, int x, int y)//hàm khỏi động trò chơi
+//{
+//	
+//		if (button == GLUT_LEFT_BUTTON && stat == GLUT_DOWN)
+//		{
+//			if (fire == false)
+//			{
+//				fire = !fire;
+//				bullet.angle = weapon.angle; // góc bắt đầu viên đạn
+//
+//				bullet.y = 50 * sin(weapon.angle * D2R);//Tọa độ đạn theo trục y
+//
+//			
+//		}
+//	glutPostRedisplay();
+//}
 
 void chuot() {
 
@@ -644,21 +686,8 @@ void Meo3() {
 	}
 }
 
-void DrawLazerBeam() {
-	float xMeo = 0, yMeo = 0;
-	//float mouseX, mouseY;
-	float xchuot = -(55 + 50) / 2.0;
-	float ychuot = (25 + 35) / 2.0;
-	float mouseXEnd /*= -((-mouseX) + xMeo)*/;
-	float mouseYEnd /*= -((-mouseY) + yMeo)*/;
-	glLineWidth(5);   //----Laser beam width
-	glColor3f(1, 0, 0);
-	glBegin(GL_LINES);
-	glVertex2f(xchuot, ychuot);
-	glVertex2f(mouseXEnd, mouseYEnd);
-	glEnd();
-	glLineWidth(1);
-}
+
+
 
 void StartGame() {
 	//Đường
@@ -733,12 +762,13 @@ void StartGame() {
 	renderBitmapString(80.5, 95 - 4, (void *)font3, level_buffer);
 	
 	//Gọi hàm
+	drawFire();
 	chuot();
 	Phomai();
 	Meo1();
 	Meo2();
 	Meo3();
-	DrawLazerBeam();
+
 }
 
 
@@ -996,27 +1026,46 @@ void reshape(int key, int x, int y) {
 		if (FPS>50 )
 			FPS = FPS - 2;
 		break;
-	case GLUT_KEY_UP:
+	/*case GLUT_KEY_UP:
 		FPS = FPS + 2;
-		break;
+		break;*/
 
 	case GLUT_KEY_LEFT:
-		if (lrIndex >= 0) {
+		if ((lrIndex >= 0) && (lrIndex5 >= 0)) {
 			lrIndex = lrIndex - (FPS / 10);
-			if (lrIndex<0) {
+			lrIndex5 = lrIndex5 - (FPS / 10);
+			if ((lrIndex<0) && (lrIndex5<0)) {
 				lrIndex = -1;
+				lrIndex5 = -1;
 			}
 		}
 		break;
 
 	case GLUT_KEY_RIGHT:
-		if (lrIndex <= 44) {
+		if ((lrIndex >= 0) && (lrIndex5 >= 0)) {
 			lrIndex = lrIndex + (FPS / 10);
-			if (lrIndex>44) {
+			lrIndex5 = lrIndex5 + (FPS / 10);
+			if ((lrIndex>44) && (lrIndex5>44)) {
 				lrIndex = 45;
+				lrIndex5 = 45;
 			}
 		}
 		break;
+
+
+
+	case GLUT_KEY_UP:
+		if  (lrIndex5 >= 0) {
+			
+			lrIndex5 = lrIndex5 + (FPS / 10);
+			if (lrIndex5>-75) {
+				
+				lrIndex5 = 0;
+			}
+		}
+		break;
+
+
 	default:
 		break;
 	}
