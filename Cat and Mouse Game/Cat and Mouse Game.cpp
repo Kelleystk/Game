@@ -2,17 +2,16 @@
 //
 
 #include "stdafx.h"
+
 #include "Dependencies\glew\glew.h"
 #include "Dependencies\freeglut\freeglut.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+
 #include <math.h>
 #include <string.h>
 #include <stdarg.h>
 #define D2R 0.0174532  // degree to radian
 #define PI 3.14159265358979323846
+#define SIZE 3
 
 void init(void) {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -72,7 +71,18 @@ typedef struct  //cấu trúc viên đạn
 	float x, y;
 }bullets_t;
 bullets_t bullet;
-
+typedef struct //Cấu trúc vị trí tâm mèo
+{
+	float y, x;
+}center_t;
+typedef struct //Khai báo cấu trúc mèo
+{
+	center_t center;
+	float theta;
+	int r;
+	int visible = 1;
+}objects_t;
+objects_t cat1;
 //Hiển thị TEXT
 const int font1 = (int)GLUT_BITMAP_TIMES_ROMAN_24;
 const int font2 = (int)GLUT_BITMAP_HELVETICA_18;
@@ -173,10 +183,19 @@ void onClick(int button, int stat, int x, int y) {
 			//Chuyển động viên đạn
 			bullet.x += 8 * sin(theta);
 			bullet.y += 45 * cos(theta);
-			//Kiểm tra va chạm với mèo
-			if (((bullet.x - lrIndex1 + 28) && (bullet.y == meo1 + 100 - 9) && cat) && ((bullet.x - lrIndex2 + 28) && (bullet.y == meo2 + 100 - 9) && cat) ){
-				cat = true;
-				fire = false;
+			if (cat1.visible == 1)
+			{
+				//Kiểm tra va chạm của viên đạn
+				float collision = sqrt((bullet.x - lrIndex1 + 28 + 3 * cos(theta)) *
+					(bullet.x - lrIndex1 + 28 + 3 * cos(theta)) +
+					(bullet.y - meo1 + 100 - 9 + 3 * sin(theta)) *
+					(bullet.y - meo1 + 100 - 9 + 3 * sin(theta)));
+				//lrIndex1 + 28 + 3 * cos(theta), meo1 + 100 - 9 + 3 * sin(theta)
+				if (collision <= 3)///Khoảng cách đạn chạm vật thể làm vật thể biến mất
+				{
+					cat1.visible = 0;//làm mất vật thể
+
+				}
 			}
 
 		}
@@ -343,7 +362,7 @@ void Phomai() {
 }
 
 void Meo1() {
-	if (cat) {
+	if (cat1.visible == 1) {
 		//Chướng ngại mèo 1(cam)
 		//Tai
 		glColor3f(1, 0.65, 0.302);
@@ -454,18 +473,17 @@ void Meo1() {
 			glVertex2f(lrIndex1 + 29 + cos(theta), meo1 + 100 - 10 + sin(theta));
 		}
 		glEnd();
+	}
+	meo1--;
+	if (meo1 < -100) {
+		meo1 = 0;
+		lrIndex1 = lrIndex;
+	}
 
-		meo1--;
-		if (meo1 < -100) {
-			meo1 = 0;
-			lrIndex1 = lrIndex;
-		}
-
-		//Đụng mèo cam
-		if ((abs(lrIndex - lrIndex1) < 8) && (meo1 + 100 < 10)) {
-			start = 0;
-			gv = 1;
-		}
+	//Đụng mèo cam
+	if ((abs(lrIndex - lrIndex1) < 8) && (meo1 + 100 < 10)) {
+		start = 0;
+		gv = 1;
 	}
 }
 
