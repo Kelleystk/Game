@@ -9,9 +9,8 @@
 #include <math.h>
 #include <string.h>
 #include <stdarg.h>
-#define D2R 0.0174532  // degree to radian
 #define PI 3.14159265358979323846
-#define SIZE 3
+
 
 void init(void) {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -44,9 +43,11 @@ int lrIndex = 0;
 int meo1 = 0;
 int lrIndex1 = 0;
 bool cat = true;
+
 //mèo xám
 int meo2 = +35;
 int lrIndex2 = 0;
+
 //mèo kem
 int meo3 = +70;
 int lrIndex3 = 0;
@@ -67,20 +68,24 @@ float theta;
 bool fire = true; //Khai báo viên đạn
 
 bool cat1 = true;
+bool cat2 = true;
+bool cat3 = true;
+
 
 typedef struct  //cấu trúc viên đạn
 {
 	float x, y;
 }bullets_t;
 bullets_t bullet;
+
 typedef struct //Cấu trúc vị trí tâm mèo
 {
 	float y, x;
 }center_t;
+
 typedef struct //Khai báo cấu trúc mèo
 {
 	center_t center;
-
 	int r;
 	int visible = 1;
 }objects_t;
@@ -185,37 +190,10 @@ void onClick(int button, int stat, int x, int y) {
 		{
 			//Chuyển động viên đạn
 			bullet.x +=0;
-			bullet.y += 45 ;
-			/*if (cat1.visible == 1)
-			{
-				//Kiểm tra va chạm của viên đạn
-				float collision = sqrt((bullet.x - lrIndex5  * cos(theta)) *
-					(bullet.x - lrIndex5  * cos(theta)) +
-					(bullet.y - meo1 + 100  * sin(theta)) *
-					(bullet.y - meo1 + 100  * sin(theta)));
-				//lrIndex1 + 28 + 3 * cos(theta), meo1 + 100 - 9 + 3 * sin(theta)
-				if (collision <= 1)///Khoảng cách đạn chạm vật thể làm vật thể biến mất
-				{
-					cat1.visible = 0;//làm mất vật thể
-
-				}
-			}*/
-			/*if ((lrIndex5 + 28 == lrIndex1 + 38) && (meo1 + 100 - 2 == 13) && fire)
-			{
-				score += 2;
-				fire = false;
-			}
-			if (meo1 < -100)
-			{
-				fire = true;
-				meo1 = 0;
-				lrIndex1 = lrIndex5;
-			}*/
+			bullet.y += 50 ;
 		}
 		
 	}
-}
-void bulletFire() {
 }
 void chuot() {
 
@@ -501,122 +479,125 @@ void Meo1() {
 	}
 	if ((lrIndex + 28 == lrIndex1 + 28 ) && (meo1 + 100 - 9 == 13 + 45) && cat1 && fire)
 	{
-		//cat1.visible = 0;
 		score += 2; 
 		cat1 = false;
+		/*meo1 = 0*/;
 	}
 }
 
 void Meo2() {
-	//Chướng ngại mèo 2(xám)
-	//Tai
-	glColor3f(0.765, 0.765, 0.765);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(lrIndex2 + 25, meo2 + 100);
-	glVertex2f(lrIndex2 + 24.5, meo2 + 100 - 3);
-	glVertex2f(lrIndex2 + 28, meo2 + 100 - 2);
-	glEnd();
-	glColor3f(0.765, 0.765, 0.765);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(lrIndex2 + 31, meo2 + 100);
-	glVertex2f(lrIndex2 + 31.5, meo2 + 100 - 3);
-	glVertex2f(lrIndex2 + 28, meo2 + 100 - 2);
-	glEnd();
+	if (cat2) {
+		//Chướng ngại mèo 2(xám)
+		//Tai
+		glColor3f(0.765, 0.765, 0.765);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(lrIndex2 + 25, meo2 + 100);
+		glVertex2f(lrIndex2 + 24.5, meo2 + 100 - 3);
+		glVertex2f(lrIndex2 + 28, meo2 + 100 - 2);
+		glEnd();
+		glColor3f(0.765, 0.765, 0.765);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(lrIndex2 + 31, meo2 + 100);
+		glVertex2f(lrIndex2 + 31.5, meo2 + 100 - 3);
+		glVertex2f(lrIndex2 + 28, meo2 + 100 - 2);
+		glEnd();
 
-	//Đầu
-	glColor3f(0.765, 0.765, 0.765);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex2 + 28 + 4 * cos(theta), meo2 + 100 - 4 + 2.5 * sin(theta));
-	}
-	glEnd();
+		//Đầu
+		glColor3f(0.765, 0.765, 0.765);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex2 + 28 + 4 * cos(theta), meo2 + 100 - 4 + 2.5 * sin(theta));
+		}
+		glEnd();
 
-	//Mắt
-	glColor3f(0, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex2 + 26 + 0.5* cos(theta), meo2 + 100 - 3.5 + 0.5* sin(theta));
-	}
-	glEnd();
-	glColor3f(0, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex2 + 30 + 0.5* cos(theta), meo2 + 100 - 3.5 + 0.5* sin(theta));
-	}
-	glEnd();
+		//Mắt
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex2 + 26 + 0.5* cos(theta), meo2 + 100 - 3.5 + 0.5* sin(theta));
+		}
+		glEnd();
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex2 + 30 + 0.5* cos(theta), meo2 + 100 - 3.5 + 0.5* sin(theta));
+		}
+		glEnd();
 
-	//Mũi
-	glColor3f(0, 0, 0);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(lrIndex2 + 28, meo2 + 100 - 5);
-	glVertex2f(lrIndex2 + 27, meo2 + 100 - 4);
-	glVertex2f(lrIndex2 + 29, meo2 + 100 - 4);
-	glEnd();
+		//Mũi
+		glColor3f(0, 0, 0);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(lrIndex2 + 28, meo2 + 100 - 5);
+		glVertex2f(lrIndex2 + 27, meo2 + 100 - 4);
+		glVertex2f(lrIndex2 + 29, meo2 + 100 - 4);
+		glEnd();
 
-	//Chân sau
-	glColor3f(0, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex2 + 26 + 1.5* cos(theta), meo2 + 100 - 12 + sin(theta));
-	}
-	glEnd();
-	glColor3f(0, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex2 + 30 + 1.5*cos(theta), meo2 + 100 - 12 + sin(theta));
-	}
-	glEnd();
+		//Chân sau
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex2 + 26 + 1.5* cos(theta), meo2 + 100 - 12 + sin(theta));
+		}
+		glEnd();
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex2 + 30 + 1.5*cos(theta), meo2 + 100 - 12 + sin(theta));
+		}
+		glEnd();
 
-	//Đuôi
-	glLineWidth(3.0f);
-	glColor3f(0, 0, 0);
-	glBegin(GL_LINE_STRIP);
-	glVertex2f(lrIndex2 + 28, meo2 + 100 - 11);
-	glVertex2f(lrIndex2 + 32, meo2 + 100 - 10);
-	glVertex2f(lrIndex2 + 31, meo2 + 100 - 8);
-	glVertex2f(lrIndex2 + 32, meo2 + 100 - 7);
-	glEnd();
+		//Đuôi
+		glLineWidth(3.0f);
+		glColor3f(0, 0, 0);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(lrIndex2 + 28, meo2 + 100 - 11);
+		glVertex2f(lrIndex2 + 32, meo2 + 100 - 10);
+		glVertex2f(lrIndex2 + 31, meo2 + 100 - 8);
+		glVertex2f(lrIndex2 + 32, meo2 + 100 - 7);
+		glEnd();
 
-	//Thân
-	glColor3f(0.765, 0.765, 0.765);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex2 + 28 + 3 * cos(theta), meo2 + 100 - 9 + 3 * sin(theta));
-	}
-	glEnd();
+		//Thân
+		glColor3f(0.765, 0.765, 0.765);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex2 + 28 + 3 * cos(theta), meo2 + 100 - 9 + 3 * sin(theta));
+		}
+		glEnd();
 
-	//Chân trước
-	glColor3f(0, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex2 + 27 + cos(theta), meo2 + 100 - 10 + sin(theta));
+		//Chân trước
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex2 + 27 + cos(theta), meo2 + 100 - 10 + sin(theta));
+		}
+		glEnd();
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex2 + 29 + cos(theta), meo2 + 100 - 10 + sin(theta));
+		}
+		glEnd();
 	}
-	glEnd();
-	glColor3f(0, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex2 + 29 + cos(theta), meo2 + 100 - 10 + sin(theta));
-	}
-	glEnd();
 	meo2--;
 	if (meo2 < -100)
 	{
+		cat2 = true;
 		meo2 = 0;
 		lrIndex2 = lrIndex;
 	}
@@ -626,121 +607,130 @@ void Meo2() {
 		start = 0;
 		gv = 1;
 	}
+	if ((lrIndex + 28 == lrIndex2 + 28) && (meo2 + 100 - 9 == 13 + 45) && cat2 && fire)
+	{
+		score += 2;
+		cat2 = false;
+	/*	meo2 = 0;*/
+	}
 }
 
 void Meo3() {
-	//Chướng ngại mèo 3(kem)
-	//Tai
-	glColor3f(0.937, 0.894, 0.69);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(lrIndex3 + 25, meo3 + 100);
-	glVertex2f(lrIndex3 + 24.5, meo3 + 100 - 3);
-	glVertex2f(lrIndex3 + 28, meo3 + 100 - 2);
-	glEnd();
+	if (cat3) {
+		//Chướng ngại mèo 3(kem)
+		//Tai
+		glColor3f(0.937, 0.894, 0.69);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(lrIndex3 + 25, meo3 + 100);
+		glVertex2f(lrIndex3 + 24.5, meo3 + 100 - 3);
+		glVertex2f(lrIndex3 + 28, meo3 + 100 - 2);
+		glEnd();
 
-	glColor3f(0.937, 0.894, 0.69);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(lrIndex3 + 31, meo3 + 100);
-	glVertex2f(lrIndex3 + 31.5, meo3 + 100 - 3);
-	glVertex2f(lrIndex3 + 28, meo3 + 100 - 2);
-	glEnd();
+		glColor3f(0.937, 0.894, 0.69);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(lrIndex3 + 31, meo3 + 100);
+		glVertex2f(lrIndex3 + 31.5, meo3 + 100 - 3);
+		glVertex2f(lrIndex3 + 28, meo3 + 100 - 2);
+		glEnd();
 
-	//Dầu
-	glColor3f(0.937, 0.894, 0.69);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex3 + 28 + 4 * cos(theta), meo3 + 100 - 4 + 2.5 * sin(theta));
+		//Dầu
+		glColor3f(0.937, 0.894, 0.69);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex3 + 28 + 4 * cos(theta), meo3 + 100 - 4 + 2.5 * sin(theta));
+		}
+		glEnd();
+
+		//Mắt
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex3 + 26 + 0.5* cos(theta), meo3 + 100 - 3.5 + 0.5* sin(theta));
+		}
+		glEnd();
+
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex3 + 30 + 0.5* cos(theta), meo3 + 100 - 3.5 + 0.5* sin(theta));
+		}
+		glEnd();
+
+		//Mũi
+		glColor3f(0, 0, 0);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(lrIndex3 + 28, meo3 + 100 - 5);
+		glVertex2f(lrIndex3 + 27, meo3 + 100 - 4);
+		glVertex2f(lrIndex3 + 29, meo3 + 100 - 4);
+		glEnd();
+
+		//Chân sau
+		glColor3f(0.596, 0.514, 0.122);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex3 + 26 + 1.5* cos(theta), meo3 + 100 - 12 + sin(theta));
+		}
+		glEnd();
+
+		glColor3f(0.596, 0.514, 0.122);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex3 + 30 + 1.5*cos(theta), meo3 + 100 - 12 + sin(theta));
+		}
+		glEnd();
+
+		//Duoi
+		glLineWidth(3.0f);
+		glColor3f(0.596, 0.514, 0.122);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(lrIndex3 + 28, meo3 + 100 - 11);
+		glVertex2f(lrIndex3 + 32, meo3 + 100 - 10);
+		glVertex2f(lrIndex3 + 31, meo3 + 100 - 8);
+		glVertex2f(lrIndex3 + 32, meo3 + 100 - 7);
+		glEnd();
+
+		//Thân
+		glColor3f(0.937, 0.894, 0.69);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex3 + 28 + 3 * cos(theta), meo3 + 100 - 9 + 3 * sin(theta));
+		}
+		glEnd();
+
+		//Chân trước
+		glColor3f(0.596, 0.514, 0.122);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex3 + 27 + cos(theta), meo3 + 100 - 10 + sin(theta));
+		}
+		glEnd();
+		glColor3f(0.596, 0.514, 0.122);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; i++)
+		{
+			theta = i*3.142 / 180;
+			glVertex2f(lrIndex3 + 29 + cos(theta), meo3 + 100 - 10 + sin(theta));
+		}
+		glEnd();
 	}
-	glEnd();
-
-	//Mắt
-	glColor3f(0, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex3 + 26 + 0.5* cos(theta), meo3 + 100 - 3.5 + 0.5* sin(theta));
-	}
-	glEnd();
-
-	glColor3f(0, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex3 + 30 + 0.5* cos(theta), meo3 + 100 - 3.5 + 0.5* sin(theta));
-	}
-	glEnd();
-
-	//Mũi
-	glColor3f(0, 0, 0);
-	glBegin(GL_TRIANGLES);
-	glVertex2f(lrIndex3 + 28, meo3 + 100 - 5);
-	glVertex2f(lrIndex3 + 27, meo3 + 100 - 4);
-	glVertex2f(lrIndex3 + 29, meo3 + 100 - 4);
-	glEnd();
-
-	//Chân sau
-	glColor3f(0.596, 0.514, 0.122);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex3 + 26 + 1.5* cos(theta), meo3 + 100 - 12 + sin(theta));
-	}
-	glEnd();
-
-	glColor3f(0.596, 0.514, 0.122);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex3 + 30 + 1.5*cos(theta), meo3 + 100 - 12 + sin(theta));
-	}
-	glEnd();
-
-	//Duoi
-	glLineWidth(3.0f);
-	glColor3f(0.596, 0.514, 0.122);
-	glBegin(GL_LINE_STRIP);
-	glVertex2f(lrIndex3 + 28, meo3 + 100 - 11);
-	glVertex2f(lrIndex3 + 32, meo3 + 100 - 10);
-	glVertex2f(lrIndex3 + 31, meo3 + 100 - 8);
-	glVertex2f(lrIndex3 + 32, meo3 + 100 - 7);
-	glEnd();
-
-	//Thân
-	glColor3f(0.937, 0.894, 0.69);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex3 + 28 + 3 * cos(theta), meo3 + 100 - 9 + 3 * sin(theta));
-	}
-	glEnd();
-
-	//Chân trước
-	glColor3f(0.596, 0.514, 0.122);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex3 + 27 + cos(theta), meo3 + 100 - 10 + sin(theta));
-	}
-	glEnd();
-	glColor3f(0.596, 0.514, 0.122);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		theta = i*3.142 / 180;
-		glVertex2f(lrIndex3 + 29 + cos(theta), meo3 + 100 - 10 + sin(theta));
-	}
-	glEnd();
 	meo3--;
 	if (meo3 < -100)
 	{
+		cat3 = true;
 		meo3 = 0;
 		lrIndex3 = lrIndex;
 	}
@@ -750,6 +740,12 @@ void Meo3() {
 	{
 		start = 0;
 		gv = 1;
+	}
+	if ((lrIndex + 28 == lrIndex3 + 28) && (meo3 + 100 - 9 == 13 + 45) && cat3 && fire)
+	{
+		score += 2;
+		cat3 = false;
+	/*	meo3 = 0;*/
 	}
 }
 
@@ -815,10 +811,10 @@ void StartGame() {
 	renderBitmapString(80.5, 95 - 2, (void *)font3, buffer1);
 
 	//in level
-	if (score % 10 == 0) {
-		int last = score / 10;
+	if (score % 20 == 0) {
+		int last = score / 20;
 		if (last != level) {
-			level = score / 10;
+			level = score / 20;
 			FPS = FPS + 2;
 
 		}
@@ -829,14 +825,13 @@ void StartGame() {
 	renderBitmapString(80.5, 95 - 4, (void *)font3, level_buffer);
 
 	//Gọi hàm
-	bulletFire();
-	drawFire();
+	
 	chuot();
 	Phomai();
 	Meo1();
 	Meo2();
 	Meo3();
-	
+	drawFire();
 }
 
 
