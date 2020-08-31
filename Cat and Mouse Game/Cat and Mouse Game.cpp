@@ -19,7 +19,7 @@ void init(void) {
 	glShadeModel(GL_FLAT);
 }
 
-//tốc độ ghi hình (frame/s)
+///
 int FPS = 100;
 
 //Game Track
@@ -64,7 +64,9 @@ int lrIndex5 = 0;
 int right2left = 0;
 float theta;
 
-bool fire = false; //Khai báo viên đạn
+bool fire = true; //Khai báo viên đạn
+
+bool cat1 = true;
 
 typedef struct  //cấu trúc viên đạn
 {
@@ -78,11 +80,12 @@ typedef struct //Cấu trúc vị trí tâm mèo
 typedef struct //Khai báo cấu trúc mèo
 {
 	center_t center;
-	float theta;
+
 	int r;
 	int visible = 1;
 }objects_t;
-objects_t cat1;
+objects_t catx;
+
 //Hiển thị TEXT
 const int font1 = (int)GLUT_BITMAP_TIMES_ROMAN_24;
 const int font2 = (int)GLUT_BITMAP_HELVETICA_18;
@@ -181,28 +184,38 @@ void onClick(int button, int stat, int x, int y) {
 		if (fire)
 		{
 			//Chuyển động viên đạn
-			bullet.x += 8 * sin(theta);
-			bullet.y += 45 * cos(theta);
-			if (cat1.visible == 1)
+			bullet.x +=0;
+			bullet.y += 45 ;
+			/*if (cat1.visible == 1)
 			{
 				//Kiểm tra va chạm của viên đạn
-				float collision = sqrt((bullet.x - lrIndex1 + 28 + 3 * cos(theta)) *
-					(bullet.x - lrIndex1 + 28 + 3 * cos(theta)) +
-					(bullet.y - meo1 + 100 - 9 + 3 * sin(theta)) *
-					(bullet.y - meo1 + 100 - 9 + 3 * sin(theta)));
+				float collision = sqrt((bullet.x - lrIndex5  * cos(theta)) *
+					(bullet.x - lrIndex5  * cos(theta)) +
+					(bullet.y - meo1 + 100  * sin(theta)) *
+					(bullet.y - meo1 + 100  * sin(theta)));
 				//lrIndex1 + 28 + 3 * cos(theta), meo1 + 100 - 9 + 3 * sin(theta)
-				if (collision <= 3)///Khoảng cách đạn chạm vật thể làm vật thể biến mất
+				if (collision <= 1)///Khoảng cách đạn chạm vật thể làm vật thể biến mất
 				{
 					cat1.visible = 0;//làm mất vật thể
 
 				}
+			}*/
+			/*if ((lrIndex5 + 28 == lrIndex1 + 38) && (meo1 + 100 - 2 == 13) && fire)
+			{
+				score += 2;
+				fire = false;
 			}
-
+			if (meo1 < -100)
+			{
+				fire = true;
+				meo1 = 0;
+				lrIndex1 = lrIndex5;
+			}*/
 		}
+		
 	}
 }
 void bulletFire() {
-
 }
 void chuot() {
 
@@ -362,7 +375,7 @@ void Phomai() {
 }
 
 void Meo1() {
-	if (cat1.visible == 1) {
+	if (cat1) {
 		//Chướng ngại mèo 1(cam)
 		//Tai
 		glColor3f(1, 0.65, 0.302);
@@ -476,6 +489,7 @@ void Meo1() {
 	}
 	meo1--;
 	if (meo1 < -100) {
+		cat1 = true;
 		meo1 = 0;
 		lrIndex1 = lrIndex;
 	}
@@ -484,6 +498,12 @@ void Meo1() {
 	if ((abs(lrIndex - lrIndex1) < 8) && (meo1 + 100 < 10)) {
 		start = 0;
 		gv = 1;
+	}
+	if ((lrIndex + 28 == lrIndex1 + 28 ) && (meo1 + 100 - 9 == 13 + 45) && cat1 && fire)
+	{
+		//cat1.visible = 0;
+		score += 2; 
+		cat1 = false;
 	}
 }
 
@@ -816,6 +836,7 @@ void StartGame() {
 	Meo1();
 	Meo2();
 	Meo3();
+	
 }
 
 
